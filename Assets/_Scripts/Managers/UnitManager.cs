@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class UnitManager : Singleton<UnitManager>
 {
-
     public void SpawnPlayer()
     {
-
+        Debug.Log("SpawnPlayer");
+        ScriptablePlayer player = ResourceSystem.Instance.GetPlayer(PlayerData.Instance.PlayerClass);
+        Instantiate(player.Prefab);
     }
 
     public void SpawnEnemy(EnemyType type, Vector2 pos)

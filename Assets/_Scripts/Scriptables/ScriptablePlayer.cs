@@ -5,10 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Player SO")]
 public class ScriptablePlayer : ScriptableUnitBase
 {
-    public PlayerClass PlayerChosenClass; 
+    public PlayerClassType playerClassType; 
 }
 
-public enum PlayerClass
+public enum PlayerClassType
 {
     Asura = 0,
     Ankou = 1,

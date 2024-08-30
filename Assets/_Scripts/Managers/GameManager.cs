@@ -6,9 +6,12 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public static event Action<GameState> OnBeforeStateChanged;
-    public static event Action<GameState> OnAfterStateChanged;
+    //public static event Action<GameState> OnAfterStateChanged;
 
-    public GameState State { get; private set; }
+    public GameState? State { get; private set; } = null;
+
+    [SerializeField] private InputReader _input;
+    [SerializeField] private GameObject pauseMenu;
 
     private void Start() => ChangeState(GameState.Starting); 
 
@@ -31,14 +34,30 @@ public class GameManager : Singleton<GameManager>
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
 
-        OnAfterStateChanged?.Invoke(newState);
+        //OnAfterStateChanged?.Invoke(newState);
     }
 
     private void HandleStarting()
     {
+        _input.PauseEvent += HandlePause;
+        _input.ResumeEvent += HandleResume;
+
+        Debug.Log("works");
         UnitManager.Instance.SpawnPlayer();
 
-        ChangeState(GameState.Win);
+    }
+
+    private void HandlePause()
+    {
+        Time.timeScale = 0;
+        pauseMenu.SetActive(true);
+        Debug.Log("works");
+    }
+
+    private void HandleResume()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
     }
 }
 

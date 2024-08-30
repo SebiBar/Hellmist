@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnkou : PlayerUnitBase
+public class PlayerAsura : PlayerUnitBase
 {
-/*    [SerializeField] private AudioClip _someSound;
+/*    [SerializeField] private AudioClip _someOtherSound;
 
     private void Start()
     {
-        AudioSystem.Instance.PlaySound(_someSound);
+        AudioSystem.Instance.PlaySound(_someOtherSound);
     }
 
      public override void FirstAbility() ... base.FirstAbility();*/

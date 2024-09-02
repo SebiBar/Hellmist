@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+GameManager handles the general game states, it does not know anything about the current map or objective,
+only changing between the general game states as needed
+ */
 public class GameManager : Singleton<GameManager>
 {
     public static event Action<GameState> OnBeforeStateChanged;
@@ -13,11 +17,24 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private InputReader _input;
     [SerializeField] private GameObject pauseMenu;
 
+    private void OnEnable()
+    {
+        _input.PauseEvent += HandlePause;
+        _input.ResumeEvent += HandleResume;
+    }
+
+    private void OnDisable()
+    {
+        _input.PauseEvent -= HandlePause;
+        _input.ResumeEvent -= HandleResume;
+    }
+
     private void Start() => ChangeState(GameState.Starting); 
 
     public void ChangeState(GameState newState)
     {
         if (State == newState) return;
+
         OnBeforeStateChanged?.Invoke(newState);
          
         State = newState;
@@ -27,8 +44,10 @@ public class GameManager : Singleton<GameManager>
                 HandleStarting();
                 break;
             case GameState.Win:
+                HandleWinning();
                 break;
             case GameState.Lose:
+                HandleLosing();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -39,25 +58,34 @@ public class GameManager : Singleton<GameManager>
 
     private void HandleStarting()
     {
-        _input.PauseEvent += HandlePause;
-        _input.ResumeEvent += HandleResume;
-
-        Debug.Log("works");
         UnitManager.Instance.SpawnPlayer();
-
+        Debug.Log("GameManager: Handled start successfully");
     }
 
     private void HandlePause()
     {
         Time.timeScale = 0;
         pauseMenu.SetActive(true);
-        Debug.Log("works");
+        Debug.Log("GameManager: Handled pause successfully");
     }
 
     private void HandleResume()
     {
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
+        Debug.Log("GameManager: Handled resume successfully");
+    }
+
+    private void HandleWinning()
+    {
+        SceneTransitioner.Instance.LoadSceneMenu();
+        Debug.Log("GameManager: Handled winning successfully");
+    }
+
+    private void HandleLosing()
+    {
+        SceneTransitioner.Instance.LoadSceneMenu();
+        Debug.Log("GameManager: Handled losing successfully");
     }
 }
 

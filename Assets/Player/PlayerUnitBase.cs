@@ -24,7 +24,6 @@ public class PlayerUnitBase : UnitBase
     private void OnEnable()
     {
         input.MoveEvent += HandleMove;
-        Debug.Log("Player handleMove");
     }
 
     private void OnDisable()

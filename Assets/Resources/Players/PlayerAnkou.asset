@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883b8ab0074a4a44c8d3a1ba7303dd61, type: 3}
   m_Name: PlayerAnkou
   m_EditorClassIdentifier: 
-  faction: 0
   _stats:
     MaxHealth: 100
+    Veil: 0
     AttackPower: 50
     MovementSpeed: 100
   Prefab: {fileID: 3489446604844396332, guid: c92a17f02e940a24cb392a4162577e11, type: 3}

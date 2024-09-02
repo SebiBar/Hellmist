@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+All managers and systems have Singleton. Only Systems parrent has SingletonPersistent
+ */
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     public static T Instance {  get; private set; }

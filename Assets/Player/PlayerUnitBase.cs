@@ -1,48 +1,85 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerUnitBase : UnitBase
+public abstract class PlayerUnitBase : UnitBase
 {
-    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] protected InputReader input;
+    [SerializeField] protected Rigidbody2D rb;
 
-    [SerializeField] private InputReader input;
+    private Vector2 _moveDirection;
 
-    [SerializeField] private Vector2 _moveDirection;
+    private bool isDashing = false;
+    protected float dashSpeed = 6f;
+    protected float dashDuration = 0.3f;
+    protected float dashCooldown = 1f;
+    private float lastDashTime = -Mathf.Infinity;
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         GameManager.OnBeforeStateChanged += OnStateChanged;
     }
 
-    private void OnStateChanged(GameState state)
+    protected virtual void OnStateChanged(GameState state)
     {
 
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         input.MoveEvent += HandleMove;
+        input.DashEvent += HandleDash;
+        input.NormalAttackEvent += HandleNormalAttack;
+        input.ChargedAttackEvent += HandleChargedAttack;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         input.MoveEvent -= HandleMove;
+        input.DashEvent -= HandleDash;
+        input.NormalAttackEvent -= HandleNormalAttack;
+        input.ChargedAttackEvent -= HandleChargedAttack;
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
-        Move();
+        if (!isDashing)
+            Move();
     }
 
-    private void HandleMove(Vector2 moveDirection)
+    protected virtual void Move()
+    {
+        rb.velocity = Stats.MovementSpeed * new Vector2(_moveDirection.x, _moveDirection.y);
+    }
+
+    protected virtual IEnumerator Dash()
+    {
+        isDashing = true;
+        lastDashTime = Time.time;
+
+        rb.velocity = Stats.MovementSpeed * dashSpeed * new Vector2(_moveDirection.x, _moveDirection.y);
+
+        yield return new WaitForSeconds(dashDuration);
+
+        isDashing = false;
+    }
+
+    protected virtual void HandleMove(Vector2 moveDirection)
     {
         _moveDirection = moveDirection;
     }
 
-    private void Move()
+    private void HandleDash()
     {
-        rb.velocity = new Vector2(_moveDirection.x, _moveDirection.y) * 100; //Stats.MovementSpeed;
+        if (Time.time >= lastDashTime + dashCooldown) // Check if cooldown period has passed
+        {
+            StartCoroutine(Dash());
+        }
     }
+
+    protected abstract void HandleNormalAttack();
+
+    protected abstract void HandleChargedAttack();
 }

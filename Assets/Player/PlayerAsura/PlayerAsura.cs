@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class PlayerAsura : PlayerUnitBase
 {
-/*    [SerializeField] private AudioClip _someOtherSound;
+    /*    [SerializeField] private AudioClip _someOtherSound;
 
-    private void Start()
+        private void Start()
+        {
+            AudioSystem.Instance.PlaySound(_someOtherSound);
+        }
+
+         public override void FirstAbility() ... base.FirstAbility();*/
+    protected override void HandleChargedAttack()
     {
-        AudioSystem.Instance.PlaySound(_someOtherSound);
+        throw new System.NotImplementedException();
     }
 
-     public override void FirstAbility() ... base.FirstAbility();*/
+    protected override void HandleNormalAttack()
+    {
+        throw new System.NotImplementedException();
+    }
 }

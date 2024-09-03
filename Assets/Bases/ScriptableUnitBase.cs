@@ -23,5 +23,5 @@ public struct Stats
     public int MaxHealth;
     public int Veil;
     public int AttackPower;
-    public int MovementSpeed;
+    public float MovementSpeed;
 }

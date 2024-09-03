@@ -8,18 +8,17 @@ SetStats(stats) are usually taken from the scriptableobjects in the beginning, h
 
 TODO: Implement Shroud
  */
-public class UnitBase : MonoBehaviour
+public abstract class UnitBase : MonoBehaviour
 {
-
-    public Stats Stats {  get; private set; }
-    public int CurrentHealth { get; private set; }
-    public virtual void SetStats(Stats stats)
+    [SerializeField] protected Stats stats;
+    public Stats Stats { get => stats; protected set => stats = value; }
+    public int CurrentHealth { get; protected set; }
+    public virtual void SetStats(Stats _stats)
     {
-        Stats = stats;
+        Stats = _stats;
         CurrentHealth = Stats.MaxHealth;
     }
-        
-
+     
     public virtual void TakeDamage(int damage)
     {
 
@@ -30,13 +29,13 @@ public class UnitBase : MonoBehaviour
             Die();
     }
 
-    public void Heal(int amount)
+    public virtual void Heal(int amount)
     {
         CurrentHealth += amount;
         CurrentHealth = Mathf.Min(CurrentHealth, Stats.MaxHealth); // Cap health to max value
     }
 
-    public virtual void Die()
+    protected virtual void Die()
     {
         GameObject.Destroy(this);
     }

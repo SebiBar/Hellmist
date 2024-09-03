@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class PlayerAnkou : PlayerUnitBase
 {
-/*    [SerializeField] private AudioClip _someSound;
+    /*    [SerializeField] private AudioClip _someSound;
 
-    private void Start()
+        private void Start()
+        {
+            AudioSystem.Instance.PlaySound(_someSound);
+        }
+
+         public override void FirstAbility() ... base.FirstAbility();*/
+    protected override void HandleChargedAttack()
     {
-        AudioSystem.Instance.PlaySound(_someSound);
+        throw new System.NotImplementedException();
     }
 
-     public override void FirstAbility() ... base.FirstAbility();*/
+    protected override void HandleNormalAttack()
+    {
+        throw new System.NotImplementedException();
+    }
 }
